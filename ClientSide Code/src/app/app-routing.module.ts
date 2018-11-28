@@ -1,0 +1,13 @@
+import { Routes } from '@angular/router';
+import { TasksComponent } from './tasks/tasks.component';
+
+
+export const routes: Routes = [
+    { path: '', redirectTo: '/tasks', pathMatch: 'full' },
+    // { path: 'home', component: AppComponent },
+    { path: 'tasks', component: TasksComponent },
+
+];
+
+
+export class AppRoutingModule {}
