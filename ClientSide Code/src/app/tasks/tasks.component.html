@@ -10,12 +10,22 @@
                 </div>
             </form>
             <table class=" table table-dark table-striped todo-list">
-                <tr *ngFor='let task of tasks; let i= index;'>
-                    <td>{{task}}</td>
+                <tr *ngFor='let task of activeTasks; let i= index;'>
+                    <td>{{task.description}}</td>
                     <td class="text-right">
                         <button class="btn btn-success">
                             <i class="glyphicon glyphicon-ok"></i>
                         </button>
+
+                        <button class="btn btn-danger">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr *ngFor='let task of completedTasks; let i= index;'>
+                    <td class='todo-completed'>{{task.description}}</td>
+                    <td class="text-right">
                         <button class="btn btn-info">
                             <i class="glyphicon glyphicon-repeat"></i>
                         </button>
