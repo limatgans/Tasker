@@ -35,9 +35,10 @@ export class TasksComponent implements OnInit {
 
   }
 
-  customIsNullOrUndefined = value => value === undefined || value === null;
+  customIsNullOrUndefined = value => value === undefined || value === null || value.length === 0;
 
   addTask() {
+    // upon pressing add Task Button
 
     // Validation
     if (this.customIsNullOrUndefined(this.inputTask)) {
@@ -51,36 +52,65 @@ export class TasksComponent implements OnInit {
     };
 
     this.activeTasks.push(taskObj);
-    sessionStorage.setItem('activeTasks', JSON.stringify(this.activeTasks));
+    this.storeInSession('activeTasks', this.activeTasks);
   }
 
   taskCompletion(index: number) {
     // upon pressing Complete Task Button
-    console.log('Index');
-    console.log(index);
 
-  }
-
-  removeActiveTask(index: number) {
-    // upon pressing remove Task Button
-    console.log('Index');
-    console.log(index);
-
+    this.modifyTask(this.activeTasks, this.completedTasks, 'activeTasks', 'completedTasks', index);
   }
 
   repeatTask(index: number) {
     // upon pressing repeat Task Button
-    console.log('Index');
-    console.log(index);
+   this.modifyTask(this.completedTasks, this.activeTasks, 'completedTasks', 'activeTasks', index);
+  }
 
+  removeActiveTask(index: number) {
+    // upon pressing remove Task Button
+    // Removing the task from Active task
+    this.modifyTask(this.activeTasks, [], 'activeTasks', '', index, 'remove');
   }
 
   removeCompletedTask(index: number) {
     // upon pressing Complete Button
-    console.log('Index');
-    console.log(index);
+    // Removing the task from completed task
+    this.modifyTask(this.completedTasks, [], 'completedTasks', '', index, 'remove');
+  }
+
+  // Used to Modify Tasks
+  modifyTask(initalTask: object[], finalTask: object[], sessionInitialKey: string,
+    sessionFinalKey: string, index: number, modificationType: string = 'modify') {
+
+    // Validations For Initial Values
+    if ([initalTask, sessionInitialKey, index].every(this.customIsNullOrUndefined)) {
+      console.log('Parameters are null or undefined in ModifyTask Function');
+      return;
+    }
+
+    if (modificationType === 'modify') {
+      // Validations for final values
+      if ([finalTask, sessionFinalKey].every(this.customIsNullOrUndefined)) {
+        console.log('Parameters are null or undefined in ModifyTask Function');
+        return;
+      }
+
+      // Adding it into Final Task
+      finalTask.push(initalTask[index]);
+      this.storeInSession(sessionFinalKey, finalTask);
+    }
+
+    // Removing the task from Inital task
+    initalTask.splice(index);
+    this.storeInSession(sessionInitialKey, initalTask);
 
   }
+
+  // Storing in Session
+  storeInSession(sessionKey: string, sessionValue: object[]) {
+    sessionStorage.setItem(sessionKey, JSON.stringify(sessionValue));
+  }
+
 
 
 }
