@@ -3,21 +3,22 @@
         <div class="col-md-6 col-md-offset-3">
             <h1>Todo List</h1>
             <hr />
-            <form >
+            <form>
                 <div class="input-group">
-                    <input type="text" name="inputTaskName" [(ngModel)]= "inputTask" class="form-control" placeholder="Your task" required>
-                    <span class="input-group-addon" (click)= "addTask()" type="submit">Add</span>
+                    <input type="text" name="inputTaskName" [(ngModel)]="inputTask" class="form-control" placeholder="Your task"
+                        required>
+                    <span class="input-group-addon" (click)="addTask()" type="submit">Add</span>
                 </div>
             </form>
             <table *ngIf="showTasks" class=" table table-dark table-striped todo-list">
-                <tr *ngFor ="let task of activeTasks; let i= index" [attr.data-index]="i">
+                <tr *ngFor="let task of activeTasks; let i= index" [attr.data-index]="i">
                     <td>{{task.description}}</td>
                     <td class="text-right">
-                        <button class="btn btn-success"  (click) = "taskCompletion(i)">
+                        <button class="btn btn-success" (click)="taskCompletion(i)">
                             <i class="glyphicon glyphicon-ok"></i>
                         </button>
 
-                        <button class="btn btn-danger" (click)= "removeActiveTask(i)">
+                        <button class="btn btn-danger" (click)="removeActiveTask(i)">
                             <i class="glyphicon glyphicon-remove"></i>
                         </button>
                     </td>
@@ -26,15 +27,33 @@
                 <tr *ngFor="let task of completedTasks; let i= index" [attr.data-index]="i">
                     <td class="todo-completed">{{task.description}}</td>
                     <td class="text-right">
-                        <button class="btn btn-info" (click)= "repeatTask(i)">
+                        <button class="btn btn-info" (click)="repeatTask(i)">
                             <i class="glyphicon glyphicon-repeat"></i>
                         </button>
-                        <button class="btn btn-danger" (click)= "removeCompletedTask(i)">
+                        <button class="btn btn-danger" (click)="removeCompletedTask(i)">
                             <i class="glyphicon glyphicon-remove"></i>
                         </button>
                     </td>
                 </tr>
             </table>
         </div>
+
+        <div class= 'col-md-3'>
+
+        </div> 
+        <div class="col-md-3 col-md-offset-3">
+                <h3>Counts</h3>
+                <hr />
+                <ul class = 'list-group'>
+                    <li class="list-group-item">Total Tasks
+                            <span class="badge badge-primary badge-pill">{{activeTasks.length + completedTasks.length}}</span>
+                    </li>
+                    <li class="list-group-item">Active Tasks : 
+                            <span class="badge badge-primary badge-pill">{{activeTasks.length}}</span></li>
+                    <li class="list-group-item">Completed Tasks : 
+                            <span class="badge badge-primary badge-pill">{{completedTasks.length}}</span></li>
+                </ul>
+            </div>
     </div>
+    
 </div>

@@ -69,13 +69,17 @@ export class TasksComponent implements OnInit {
   removeActiveTask(index: number) {
     // upon pressing remove Task Button
     // Removing the task from Active task
-    this.modifyTask(this.activeTasks, [], 'activeTasks', '', index, 'remove');
+    if (confirm('Remove Task?')) {
+      this.modifyTask(this.activeTasks, [], 'activeTasks', '', index, 'remove');
+    }
   }
 
   removeCompletedTask(index: number) {
     // upon pressing Complete Button
     // Removing the task from completed task
+    if (confirm('Remove Task?')) {
     this.modifyTask(this.completedTasks, [], 'completedTasks', '', index, 'remove');
+    }
   }
 
   // Used to Modify Tasks
@@ -110,7 +114,5 @@ export class TasksComponent implements OnInit {
   storeInSession(sessionKey: string, sessionValue: object[]) {
     sessionStorage.setItem(sessionKey, JSON.stringify(sessionValue));
   }
-
-
 
 }
