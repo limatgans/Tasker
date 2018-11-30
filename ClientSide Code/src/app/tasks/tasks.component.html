@@ -11,8 +11,8 @@
                 </div>
             </form>
             <table *ngIf="showTasks" class=" table table-dark table-striped todo-list">
-                <tr *ngFor="let task of activeTasks; let i= index" [attr.data-index]="i">
-                    <td>{{task.description}}</td>
+                <tr *ngFor="let activetask of activeTasks; let i= index" [attr.data-index]="i">
+                    <td>{{activetask.description}}</td>
                     <td class="text-right">
                         <button class="btn btn-success" (click)="taskCompletion(i)">
                             <i class="glyphicon glyphicon-ok"></i>
@@ -38,22 +38,27 @@
             </table>
         </div>
 
-        <div class= 'col-md-3'>
+        <div class='col-md-3'>
 
-        </div> 
+        </div>
         <div class="col-md-3 col-md-offset-3">
-                <h3>Counts</h3>
-                <hr />
-                <ul class = 'list-group'>
-                    <li class="list-group-item">Total Tasks
-                            <span class="badge badge-primary badge-pill">{{activeTasks.length + completedTasks.length}}</span>
-                    </li>
-                    <li class="list-group-item">Active Tasks : 
-                            <span class="badge badge-primary badge-pill">{{activeTasks.length}}</span></li>
-                    <li class="list-group-item">Completed Tasks : 
-                            <span class="badge badge-primary badge-pill">{{completedTasks.length}}</span></li>
-                </ul>
-            </div>
+            <h3>Counts</h3>
+            <hr />
+            <ul class='list-group'>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Total Tasks
+                    <span class="badge badge-primary badge-pill">{{activeTasks.length + completedTasks.length}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Active Tasks :
+                    <span class="badge badge-primary badge-pill">{{activeTasks.length}}</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Completed Tasks :
+                    <span class="badge badge-primary badge-pill">{{completedTasks.length}}</span></li>
+            </ul>
+        </div>
     </div>
-    
+    <div class="row">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-dark" (click)="removeAllCompletedTasks()">Remove Completed Tasks</button>
+        </div>
+    </div>
+
 </div>

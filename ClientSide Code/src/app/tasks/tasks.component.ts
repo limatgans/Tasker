@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import isNilOrEmpty from 'src/utils/isNilOrEmpty';
+
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
@@ -10,6 +12,12 @@ export class TasksComponent implements OnInit {
   showTasks = false;
   activeTasks: object[];
   completedTasks: object[];
+
+  // Session Storage Strings
+  storageStrings = {
+    'active': 'activeTasks',
+    'completed': 'completedTasks'
+  };
   constructor() { }
 
   ngOnInit() {
@@ -18,59 +26,58 @@ export class TasksComponent implements OnInit {
     this.activeTasks = [];
     this.completedTasks = [];
 
-
     // Getting task details from Session Storage
-    const sessionActiveTask = sessionStorage.getItem('activeTasks');
-    const sessionCompTask = sessionStorage.getItem('completedTasks');
+    const sessionActiveTask = sessionStorage.getItem(this.storageStrings.active);
+    const sessionCompTask = sessionStorage.getItem(this.storageStrings.completed);
 
-    if (!this.customIsNullOrUndefined(sessionActiveTask)) {
-      this.activeTasks = JSON.parse(sessionStorage.getItem('activeTasks'));
+    if (!isNilOrEmpty(sessionActiveTask)) {
+      this.activeTasks = JSON.parse(sessionStorage.getItem(this.storageStrings.active));
     }
 
-    if (!this.customIsNullOrUndefined(sessionCompTask)) {
-      this.completedTasks = JSON.parse(sessionStorage.getItem('completedTasks'));
+    if (!isNilOrEmpty(sessionCompTask)) {
+      this.completedTasks = JSON.parse(sessionStorage.getItem(this.storageStrings.completed));
     }
 
     this.showTasks = true;
 
   }
 
-  customIsNullOrUndefined = value => value === undefined || value === null || value.length === 0;
 
   addTask() {
     // upon pressing add Task Button
 
     // Validation
-    if (this.customIsNullOrUndefined(this.inputTask)) {
+    if (isNilOrEmpty(this.inputTask)) {
       alert('Please Enter a Task!');
       return;
     }
 
     const taskObj = {
-      'description': this.inputTask,
-      'status': 'Active'
+      'description': this.inputTask
+      // 'status': 'Active'
     };
 
     this.activeTasks.push(taskObj);
-    this.storeInSession('activeTasks', this.activeTasks);
+    this.storeInSession(this.storageStrings.active, this.activeTasks);
+    this.inputTask = '';
   }
 
   taskCompletion(index: number) {
     // upon pressing Complete Task Button
 
-    this.modifyTask(this.activeTasks, this.completedTasks, 'activeTasks', 'completedTasks', index);
+    this.modifyTask(this.activeTasks, this.completedTasks, this.storageStrings.active, this.storageStrings.completed, index);
   }
 
   repeatTask(index: number) {
     // upon pressing repeat Task Button
-   this.modifyTask(this.completedTasks, this.activeTasks, 'completedTasks', 'activeTasks', index);
+    this.modifyTask(this.completedTasks, this.activeTasks, this.storageStrings.completed, this.storageStrings.active, index);
   }
 
   removeActiveTask(index: number) {
     // upon pressing remove Task Button
     // Removing the task from Active task
     if (confirm('Remove Task?')) {
-      this.modifyTask(this.activeTasks, [], 'activeTasks', '', index, 'remove');
+      this.modifyTask(this.activeTasks, [], this.storageStrings.active, '', index, 'remove');
     }
   }
 
@@ -78,7 +85,21 @@ export class TasksComponent implements OnInit {
     // upon pressing Complete Button
     // Removing the task from completed task
     if (confirm('Remove Task?')) {
-    this.modifyTask(this.completedTasks, [], 'completedTasks', '', index, 'remove');
+      this.modifyTask(this.completedTasks, [], this.storageStrings.completed, '', index, 'remove');
+    }
+  }
+
+  removeAllCompletedTasks() {
+
+    if (isNilOrEmpty(this.completedTasks)) {
+      return;
+    }
+
+    if (confirm('Remove All Tasks?')) {
+
+      this.completedTasks = [];
+      this.storeInSession(this.storageStrings.completed, this.completedTasks);
+
     }
   }
 
@@ -87,16 +108,14 @@ export class TasksComponent implements OnInit {
     sessionFinalKey: string, index: number, modificationType: string = 'modify') {
 
     // Validations For Initial Values
-    if ([initalTask, sessionInitialKey, index].every(this.customIsNullOrUndefined)) {
-      console.log('Parameters are null or undefined in ModifyTask Function');
-      return;
+    if ([initalTask, sessionInitialKey, index].every(isNilOrEmpty)) {
+      return console.log('Parameters are null or undefined in ModifyTask Function');
     }
 
     if (modificationType === 'modify') {
       // Validations for final values
-      if ([finalTask, sessionFinalKey].every(this.customIsNullOrUndefined)) {
-        console.log('Parameters are null or undefined in ModifyTask Function');
-        return;
+      if ([finalTask, sessionFinalKey].every(isNilOrEmpty)) {
+        return console.log('Parameters are null or undefined in ModifyTask Function');
       }
 
       // Adding it into Final Task
@@ -105,7 +124,7 @@ export class TasksComponent implements OnInit {
     }
 
     // Removing the task from Inital task
-    initalTask.splice(index);
+    initalTask.splice(index, 1);
     this.storeInSession(sessionInitialKey, initalTask);
 
   }
