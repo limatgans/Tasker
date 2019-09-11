@@ -7,7 +7,7 @@
                 <div class="input-group">
                     <input type="text" name="inputTaskName" [(ngModel)]="inputTask" class="form-control" placeholder="Your task"
                         required>
-                    <span class="input-group-addon" (click)="addTask()" type="submit">Add</span>
+                    <button class="btn btn-dark" (click)="addTask()" type="submit">Add</button>
                 </div>
             </form>
             <table *ngIf="showTasks" class=" table table-dark table-striped todo-list">
@@ -15,11 +15,14 @@
                     <td>{{activetask.description}}</td>
                     <td class="text-right">
                         <button class="btn btn-success" (click)="taskCompletion(i)">
-                            <i class="glyphicon glyphicon-ok"></i>
+                            <!-- <i class="glyphicon glyphicon-ok"></i> -->
+                            Ok
                         </button>
-
+                    </td>
+                    <td>
                         <button class="btn btn-danger" (click)="removeActiveTask(i)">
-                            <i class="glyphicon glyphicon-remove"></i>
+                            <!-- <i class="glyphicon glyphicon-remove"></i> -->
+                            X
                         </button>
                     </td>
                 </tr>
@@ -28,10 +31,15 @@
                     <td class="todo-completed">{{task.description}}</td>
                     <td class="text-right">
                         <button class="btn btn-info" (click)="repeatTask(i)">
-                            <i class="glyphicon glyphicon-repeat"></i>
+                            <!-- <i class="glyphicon glyphicon-repeat"></i> -->
+                            Redo
                         </button>
+
+                    </td>
+                    <td>
                         <button class="btn btn-danger" (click)="removeCompletedTask(i)">
-                            <i class="glyphicon glyphicon-remove"></i>
+                            <!-- <i class="glyphicon glyphicon-remove"></i> -->
+                            X
                         </button>
                     </td>
                 </tr>
